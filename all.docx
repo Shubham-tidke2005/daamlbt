@@ -1,0 +1,860 @@
+Write a program non-recursive and recursive program to calculate Fibonacci numbers and analyze their time and space complexity.
+
+# Non-Recursive Fibonacci
+def fibonacci(n):
+    a, b = 0, 1
+    for i in range(n):
+        print(a, end=" ")
+        a, b = b, a + b
+
+
+# Recursive Fibonacci
+def recursive(n):
+    if n <= 1:
+        return n
+    return recursive(n-1) + recursive(n-2)
+
+
+n = int(input("Enter number of terms: "))
+
+print("Non-Recursive:")
+fibonacci(n)
+
+print("\nRecursive:")
+for i in range(n):
+    print(recursive(i), end=" ")
+
+print("\nTime Complexity:")
+print("Non-Recursive: O(n)")
+print("Recursive: O(2^n)")
+
+print("\nSpace Complexity:")
+print("Non-Recursive: O(1)")
+print("Recursive: O(n)")
+
+OUTPUT:
+Enter number of terms: 5
+Non-Recursive:
+0 1 1 2 3 
+Recursive:
+0 1 1 2 3 
+Time Complexity:
+Non-Recursive: O(n)
+Recursive: O(2^n)
+
+Space Complexity:
+Non-Recursive: O(1)
+Recursive: O(n)
+
+Write a program to implement Huffman Encoding using a greedy strategy.
+
+
+import heapq
+
+def huffman(chars, freq):
+    heap = []
+
+    for i in range(len(chars)):
+        heap.append((freq[i], i, chars[i]))
+
+    heapq.heapify(heap)
+
+    while len(heap) > 1:
+        f1, _, c1 = heapq.heappop(heap)
+        f2, _, c2 = heapq.heappop(heap)
+
+        heapq.heappush(
+            heap, (f1 + f2, len(heap) + 100, [c1, c2])
+        )
+
+    def display(node, code):
+        if isinstance(node, str):
+            print(node, ":", code)
+        else:
+            display(node[0], code + "0")
+            display(node[1], code + "1")
+
+    print("Huffman Codes:")
+    display(heap[0][2], "")
+
+
+n = int(input("Enter number of characters: "))
+
+chars = []
+freq = []
+
+for i in range(n):
+    chars.append(input("Enter character: "))
+    freq.append(int(input("Enter frequency: ")))
+
+huffman(chars, freq)
+
+
+OUTPUT:
+Enter number of characters: 4
+Enter character: A
+Enter frequency: 10
+Enter character: B
+Enter frequency: 20
+Enter character: C
+Enter frequency: 30
+Enter character: D
+Enter frequency: 40
+
+Huffman Codes:
+D : 0
+C : 10
+A : 110
+B : 111
+
+Write a program to solve a fractional Knapsack problem using a greedy method.
+
+
+
+n = int(input("Enter number of items: "))
+
+weight = []
+profit = []
+
+for i in range(n):
+    weight.append(int(input("Enter weight: ")))
+    profit.append(int(input("Enter profit: ")))
+
+capacity = int(input("Enter capacity: "))
+
+ratio = []
+
+for i in range(n):
+    ratio.append((profit[i] / weight[i], weight[i], profit[i]))
+
+ratio.sort(reverse=True)
+
+total = 0
+
+for r, w, p in ratio:
+    if capacity >= w:
+        total += p
+        capacity -= w
+    else:
+        total += r * capacity
+        break
+
+print("Maximum Profit:", total)
+
+
+Output
+text
+Enter number of items: 4
+Enter weight: 5
+Enter profit: 40
+Enter weight: 3
+Enter profit: 30
+Enter weight: 6
+Enter profit: 50
+Enter weight: 2
+Enter profit: 45
+Enter capacity: 60
+Maximum Profit: 165
+
+
+• Write a program to solve a 0-1 Knapsack problem using dynamic programming or branch and bound strategy
+
+
+n = int(input("Enter number of items: "))
+
+w = []
+p = []
+
+for i in range(n):
+    w.append(int(input("Enter weight: ")))
+    p.append(int(input("Enter profit: ")))
+
+c = int(input("Enter capacity: "))
+
+dp = [[0] * (c + 1) for i in range(n + 1)]
+
+for i in range(1, n + 1):
+    for j in range(c + 1):
+        if w[i-1] <= j:
+            dp[i][j] = max(
+                p[i-1] + dp[i-1][j-w[i-1]],
+                dp[i-1][j]
+            )
+        else:
+            dp[i][j] = dp[i-1][j]
+
+print("Maximum Profit:", dp[n][c])
+
+
+Output
+text
+Enter number of items: 4
+Enter weight: 2
+Enter profit: 20
+Enter weight: 1
+Enter profit: 30
+Enter weight: 3
+Enter profit: 40
+Enter weight: 4
+Enter profit: 50
+Enter capacity: 5
+
+Maximum Profit: 80
+
+
+
+• Design n-Queens matrix having first Queen placed. Use backtracking to place remaining Queens to generate the final n-queen’s matrix.
+
+
+def solve(board, row, n):
+    if row == n:
+        return True
+
+    for col in range(n):
+        safe = True
+
+        for i in range(row):
+            for j in range(n):
+                if board[i][j] == 1:
+                    if j == col or abs(i-row) == abs(j-col):
+                        safe = False
+
+        if safe:
+            board[row][col] = 1
+
+            if solve(board, row+1, n):
+                return True
+
+            board[row][col] = 0
+
+    return False
+
+
+n = int(input("Enter number of queens: "))
+
+board = [[0]*n for i in range(n)]
+
+if solve(board, 0, n):
+    print("N-Queens Matrix:")
+    for row in board:
+        print(*row)
+else:
+    print("No solution")
+
+Output
+text
+Enter number of queens: 4
+N-Queens Matrix:
+0 1 0 0
+0 0 0 1
+1 0 0 0
+0 0 1 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ML CODES
+
+1. Uber Ride Price Prediction Using Linear Regression
+Aim: Predict the price of an Uber ride from pickup and drop-off locations using Linear Regression and Decision Tree Regression.
+Python Program
+python
+
+# Cell 1: Import libraries
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import r2_score, mean_squared_error
+
+# Cell 2: Load Dataset
+df = pd.read_csv("uber.csv")
+
+# Cell 3: Preprocessing
+df = df.drop(
+    columns=["Unnamed: 0", "key", "pickup_datetime"],
+    errors="ignore"
+)
+df = df.dropna()
+df = df[df["fare_amount"] > 0]
+
+# Cell 4: Identify outliers
+Q1 = df["fare_amount"].quantile(0.25)
+Q3 = df["fare_amount"].quantile(0.75)
+IQR = Q3 - Q1
+
+outliers = df[
+    (df["fare_amount"] < Q1 - 1.5 * IQR) |
+    (df["fare_amount"] > Q3 + 1.5 * IQR)
+]
+
+print("Outliers:", len(outliers))
+
+df = df[~df.index.isin(outliers.index)]
+
+# Cell 5: Check correlation
+print(df[[
+    "fare_amount",
+    "pickup_longitude",
+    "pickup_latitude",
+    "dropoff_longitude",
+    "dropoff_latitude",
+    "passenger_count"
+]].corr())
+
+# Cell 6: Split Dataset
+X = df[[
+    "pickup_longitude",
+    "pickup_latitude",
+    "dropoff_longitude",
+    "dropoff_latitude",
+    "passenger_count"
+]]
+
+y = df["fare_amount"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Cell 7: Train and compare models
+models = [
+    LinearRegression(),
+    DecisionTreeRegressor()
+]
+
+for model in models:
+    model.fit(X_train, y_train)
+    pred = model.predict(X_test)
+
+    print("\n", type(model).__name__)
+    print("R2 Score:", r2_score(y_test, pred))
+    print("RMSE:", np.sqrt(mean_squared_error(y_test, pred)))
+Output (format)
+text
+Outliers: [number of outliers]
+
+LinearRegression
+R2 Score: [score]
+RMSE: [value]
+
+DecisionTreeRegressor
+R2 Score: [score]
+RMSE: [value]
+Note: Actual scores depend on the uber.csv dataset.
+2. Uber Ride Price Prediction Using Random Forest Regression
+Aim: Predict Uber ride prices using Random Forest Regression and evaluate the model.
+Python Program
+python
+
+# Cell 1: Import libraries
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import r2_score, mean_squared_error
+
+# Cell 2: Load dataset
+df = pd.read_csv("uber.csv")
+
+# Cell 3: Pre-process dataset
+df = df.drop(
+    columns=["Unnamed: 0", "key", "pickup_datetime"],
+    errors="ignore"
+)
+
+df = df.dropna()
+df = df[df["fare_amount"] > 0]
+
+# Cell 4: Identify outliers
+Q1 = df["fare_amount"].quantile(0.25)
+Q3 = df["fare_amount"].quantile(0.75)
+IQR = Q3 - Q1
+
+outliers = df[
+    (df["fare_amount"] < Q1 - 1.5 * IQR) |
+    (df["fare_amount"] > Q3 + 1.5 * IQR)
+]
+
+print("Outliers:", len(outliers))
+
+df = df[~df.index.isin(outliers.index)]
+
+# Cell 5: Check correlation
+print(df.corr(numeric_only=True))
+
+# Cell 6: Split dataset
+X = df[[
+    "pickup_longitude",
+    "pickup_latitude",
+    "dropoff_longitude",
+    "dropoff_latitude",
+    "passenger_count"
+]]
+
+y = df["fare_amount"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Cell 7: Random Forest Regression and evaluation
+model = RandomForestRegressor(
+    n_estimators=100,
+    random_state=42
+)
+
+model.fit(X_train, y_train)
+
+pred = model.predict(X_test)
+
+print("R2 Score:", r2_score(y_test, pred))
+print("RMSE:", np.sqrt(mean_squared_error(y_test, pred)))
+Output (format)
+text
+Outliers: [number of outliers]
+R2 Score: [score]
+RMSE: [value]
+3. Email Spam Detection Using K-Nearest Neighbors (KNN)
+Aim: Classify emails into Spam and Not Spam using the K-Nearest Neighbors algorithm.
+Python Program
+python
+
+# Cell 1: Import libraries
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    classification_report
+)
+
+# Cell 2: Load dataset
+df = pd.read_csv("emails.csv")
+
+X = df.drop(["Email No.", "Prediction"], axis=1)
+y = df["Prediction"]
+
+print(df.head())
+
+# Cell 3: Split and scale data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,
+    random_state=42,
+    stratify=y
+)
+
+sc = StandardScaler()
+
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+# Cell 4: Apply KNN algorithm
+knn = KNeighborsClassifier(n_neighbors=5)
+
+knn.fit(X_train, y_train)
+
+y_pred = knn.predict(X_test)
+
+# Cell 5: Analyze performance
+print("Accuracy:", accuracy_score(y_test, y_pred))
+
+print("\nConfusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
+Output (format)
+text
+Accuracy: [score]
+
+Confusion Matrix:
+[[... ...]
+ [... ...]]
+
+Classification Report:
+              precision    recall    f1-score
+...
+4. Email Spam Detection Using Support Vector Machine (SVM)
+Aim: Classify emails into Spam and Not Spam using Support Vector Machine.
+Python Program
+python
+
+# Cell 1: Import libraries
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    classification_report
+)
+
+# Cell 2: Load Dataset
+df = pd.read_csv("emails.csv")
+
+X = df.drop(["Email No.", "Prediction"], axis=1)
+y = df["Prediction"]
+
+print(df.head())
+
+# Cell 3: Split and scale data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,
+    random_state=42,
+    stratify=y
+)
+
+sc = StandardScaler()
+
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+# Cell 4: Apply SVM algorithm
+svm = SVC(kernel="linear")
+
+svm.fit(X_train, y_train)
+
+y_pred = svm.predict(X_test)
+
+# Cell 5: Analyze performance
+print("Accuracy:", accuracy_score(y_test, y_pred))
+
+print("\nConfusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
+Output (format)
+text
+Accuracy: [score]
+
+Confusion Matrix:
+[[... ...]
+ [... ...]]
+
+Classification Report:
+              precision    recall    f1-score
+...
+5. Bank Customer Churn Prediction Using Neural Network
+Aim: Build a Neural Network classifier to predict whether a bank customer will leave the bank or not.
+Python Program
+python
+
+# Cell 1: Import Libraries
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+# Cell 2: Read Dataset
+data = pd.read_csv("Churn_Modelling.csv")
+
+print(data.head())
+print("Dataset Shape:", data.shape)
+
+# Cell 3: Separate Features and Target
+data = data.drop(
+    ["RowNumber", "CustomerId", "Surname"],
+    axis=1
+)
+
+X = data.drop("Exited", axis=1)
+y = data["Exited"]
+
+X = pd.get_dummies(X, drop_first=True)
+
+print("Features:", X.shape)
+print("Target:", y.shape)
+
+# Cell 4: Divide Training and Testing Data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,
+    random_state=42
+)
+
+print("Training Data:", X_train.shape)
+print("Testing Data:", X_test.shape)
+
+# Cell 5: Normalize Training and Testing Data
+sc = StandardScaler()
+
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+print("Data Normalized Successfully")
+
+# Cell 6: Initialize and Build Neural Network Model
+model = MLPClassifier(
+    hidden_layer_sizes=(10,),
+    max_iter=500,
+    random_state=42
+)
+
+model.fit(X_train, y_train)
+
+print("Model Trained Successfully")
+
+# Cell 7: Make Predictions
+y_pred = model.predict(X_test)
+
+# Cell 8: Print Accuracy and Confusion Matrix
+print("Accuracy:", accuracy_score(y_test, y_pred))
+
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+Output (format)
+text
+Dataset Shape: (10000, 14)
+Features: (10000, ...)
+Target: (10000,)
+Training Data: (8000, ...)
+Testing Data: (2000, ...)
+Data Normalized Successfully
+Model Trained Successfully
+Accuracy: [score]
+Confusion Matrix:
+[[... ...]
+ [... ...]]
+6. Diabetes Prediction Using K-Nearest Neighbors (KNN)
+Aim: Implement the KNN algorithm on the diabetes dataset and calculate confusion matrix, accuracy, error rate, precision, and recall.
+Python Program
+python
+
+# Cell 1: Import Libraries
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import (
+    confusion_matrix,
+    accuracy_score,
+    precision_score,
+    recall_score
+)
+
+# Cell 2: Read Dataset
+data = pd.read_csv("diabetes.csv")
+
+print(data.head())
+
+# Cell 3: Separate Features and Target
+X = data.drop("Outcome", axis=1)
+y = data["Outcome"]
+
+# Cell 4: Divide Training and Testing Data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,
+    random_state=42
+)
+
+# Cell 5: Normalize Data
+sc = StandardScaler()
+
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+# Cell 6: Apply KNN Algorithm
+model = KNeighborsClassifier(n_neighbors=5)
+
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+# Cell 7: Confusion Matrix
+cm = confusion_matrix(y_test, y_pred)
+
+print("Confusion Matrix:")
+print(cm)
+
+# Cell 8: Calculate Accuracy, Error Rate, Precision and Recall
+accuracy = accuracy_score(y_test, y_pred)
+
+error_rate = 1 - accuracy
+
+precision = precision_score(
+    y_test, y_pred, zero_division=0
+)
+
+recall = recall_score(
+    y_test, y_pred, zero_division=0
+)
+
+print("Accuracy:", accuracy)
+print("Error Rate:", error_rate)
+print("Precision:", precision)
+print("Recall:", recall)
+Output (format)
+text
+Confusion Matrix:
+[[... ...]
+ [... ...]]
+
+Accuracy: [score]
+Error Rate: [score]
+Precision: [score]
+Recall: [score]
+7. K-Means Clustering Using Elbow Method
+Aim: Implement K-Means clustering on the sales dataset and determine the optimal number of clusters using the Elbow Method.
+Python Program
+python
+
+# Cell 1: Import libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+
+# Cell 2: Read Dataset
+data = pd.read_csv(
+    "sales_data_sample.csv",
+    encoding="latin1"
+)
+
+print(data.head())
+
+# Cell 3: Select required columns
+X = data[
+    ["QUANTITYORDERED", "PRICEEACH", "SALES", "MSRP"]
+]
+
+# Cell 4: Apply StandardScaler
+sc = StandardScaler()
+
+X = sc.fit_transform(X)
+
+# Cell 5: Elbow Method
+wcss = []
+
+for i in range(1, 11):
+    model = KMeans(
+        n_clusters=i,
+        random_state=42,
+        n_init=10
+    )
+
+    model.fit(X)
+
+    wcss.append(model.inertia_)
+
+plt.plot(range(1, 11), wcss, marker="o")
+
+plt.xlabel("Number of Clusters")
+plt.ylabel("WCSS")
+plt.title("Elbow Method")
+
+plt.show()
+
+# Cell 6: Apply K-Means Clustering
+model = KMeans(
+    n_clusters=3,
+    random_state=42,
+    n_init=10
+)
+
+model.fit(X)
+
+data["Cluster"] = model.labels_
+
+print(data[["SALES", "Cluster"]].head(10))
+
+# Cell 7: Display Number of Records in Each Cluster
+print(data["Cluster"].value_counts())
+Output (format)
+text
+[First five rows of dataset]
+
+      SALES  Cluster
+0    ...       ...
+1    ...       ...
+2    ...       ...
+3    ...       ...
+4    ...       ...
+
+Cluster
+0    ...
+1    ...
+2    ...
+
+Important: Dataset files required
+Keep these CSV files in the same folder as your Python programs.
+Practical
+Dataset filename
+1. Linear Regression
+uber.csv
+2. Random Forest
+uber.csv
+3. KNN Spam Detection
+emails.csv
+4. SVM Spam Detection
+emails.csv
+5. Neural Network
+Churn_Modelling.csv
+6. Diabetes KNN
+diabetes.csv
+7. K-Means Clustering
+sales_data_sample.csv
+
+Common libraries to install
+Run this command in Jupyter Notebook or terminal if the libraries are not installed:
+python
+pip install pandas numpy matplotlib scikit-learn
+Quick revision table for practical exam
+No.
+Practical
+Algorithm
+1
+Uber price prediction
+Linear Regression
+2
+Uber price prediction
+Random Forest
+3
+Email spam detection
+KNN
+4
+Email spam detection
+SVM
+5
+Bank customer churn
+Neural Network
+6
+Diabetes prediction
+KNN
+7
+Sales clustering
+K-Means
+
+A few important notes:
+All seven programs are kept in your original sequence.
+The indentation and broken import statements are corrected.
+The output values marked as [score] depend on the actual CSV datasets, so they should not be memorized as fixed values.
+In Practical 7, three clusters are used as in your original code; the elbow graph helps decide whether three is suitable.
+In Practical 1 and 2, the original preprocessing logic is retained. For more reliable real-world predictions, invalid geographic coordinates and unrealistic passenger counts should also be filtered.
+
+
