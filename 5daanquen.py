@@ -1,36 +1,69 @@
 
-def solve(board, row, n):
+class Solution:
 
-    if row == n:
+    def isvalid(self, board, row, col, n):
+
+        # Check column
+        for i in range(row):
+            if board[i][col] == 'Q':
+                return False
+
+        # Check upper left diagonal
+        i = row - 1
+        j = col - 1
+
+        while i >= 0 and j >= 0:
+            if board[i][j] == 'Q':
+                return False
+            i -= 1
+            j -= 1
+
+        # Check upper right diagonal
+        i = row - 1
+        j = col + 1
+
+        while i >= 0 and j < n:
+            if board[i][j] == 'Q':
+                return False
+            i -= 1
+            j += 1
+
         return True
 
-    for col in range(n):
-        safe = True
+    def nQueen(self, board, ans, row, n):
 
-        for i in range(row):
-            for j in range(n):
-                if board[i][j] == 1:
-                    if j == col or abs(i-row) == abs(j-col):
-                        safe = False
+        if row == n:
+            ans.append(["".join(r) for r in board])
+            return
 
-        if safe:
-            board[row][col] = 1
+        for j in range(n):
+            if self.isvalid(board, row, j, n):
+                board[row][j] = 'Q'
 
-            if solve(board, row+1, n):
-                return True
+                self.nQueen(board, ans, row + 1, n)
 
-            board[row][col] = 0
+                board[row][j] = '.'
 
-    return False
+    def solveNQueens(self, n):
+
+        board = [['.'] * n for i in range(n)]
+        ans = []
+
+        self.nQueen(board, ans, 0, n)
+
+        return ans
 
 
 n = int(input("Enter number of queens: "))
 
-board = [[0] * n for i in range(n)]
+obj = Solution()
+result = obj.solveNQueens(n)
 
-if solve(board, 0, n):
-    print("N-Queens Matrix:")
-    for row in board:
-        print(*row)
+if result:
+    print("N-Queens Solutions:")
+    for solution in result:
+        for row in solution:
+            print(row)
+        print()
 else:
     print("No solution")
